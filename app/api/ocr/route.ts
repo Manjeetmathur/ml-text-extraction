@@ -183,7 +183,6 @@ export async function POST(req: NextRequest) {
 
     const { data: { text } } = await worker.recognize(processedBuffer);
     await worker.terminate();
-    console.log('Raw OCR Text:', text);
     // Results logic
     let textFound = false;
     let matchedText: string | null = null;
