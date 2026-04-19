@@ -173,8 +173,14 @@ export async function POST(req: NextRequest) {
 
     // Initialize Tesseract worker
     const worker = await Tesseract.createWorker('eng', 1, {
+      langPath: process.cwd(),
       workerPath: path.join(process.cwd(), 'node_modules/tesseract.js/src/worker-script/node/index.js'),
       corePath: path.join(process.cwd(), 'node_modules/tesseract.js-core/tesseract-core.js'),
+      logger: (m) => {
+        if (m.status === 'recognizing text') {
+          console.log(`OCR Progress: ${(m.progress * 100).toFixed(2)}%`);
+        }
+      },
     });
 
     await worker.setParameters({
