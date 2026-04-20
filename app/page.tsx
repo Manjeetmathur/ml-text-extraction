@@ -53,12 +53,16 @@ export default function Home() {
     formData.append('regex', regexText);
 
     try {
-      const response = await fetch('/api/ocr', {
+      const response = await fetch('http://localhost:3001/api/ocr', {
         method: 'POST',
         body: formData,
       });
 
       const data = await response.json();
+      if (!response.ok) {
+        alert(data.error || 'Failed to process image');
+        return;
+      }
       setResult(data);
     } catch (error) {
       console.error('Error:', error);
